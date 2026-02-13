@@ -36,3 +36,10 @@ Kullanıcı arayüzü, en güncel Next.js özellikleri kullanılarak SEO ve perf
 cd ProductFlow.OnionTest.Server.API
 dotnet restore
 dotnet run
+
+
+### 3. Frontend Ayarları
+```bash
+cd ProductFlow.NextApp
+npm install
+npm run dev
