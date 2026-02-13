@@ -1,0 +1,28 @@
+{
+  "Navbar": {
+    "home": "Ana Sayfa",
+    "basket": "Sepetim",
+    "logout": "Çıkış Yap"
+    
+  },
+  "Common": {
+    "addToBasket": "Sepete Ekle",
+    "price": "TL"
+  },
+   "Filter": {
+    "Filtering" : "Filtre",
+    "Category": "Kategoriler",
+    "minPrice": "Minumum Fiyat",
+    "maxPrice": "Maksimum Fiyat",
+    "showResult" : "Sonuçları Göster",
+    "Reset" : "Filtreyi Sıfırla",
+    "allCategory" : "Tümü"
+  },
+   "Basket": {
+    "myCart" : "Sepetim",
+    "orderSummary": "Sipariş Özeti",
+    "totalProduct": "Toplam Ürün",
+    "totalAmount": "Toplam Tutar",
+    "payment": "Ödeme"
+  }
+}

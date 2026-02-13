@@ -1,0 +1,28 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "basket": "My Basket",
+    "logout": "Logout"
+  
+  },
+  "Common": {
+    "addToBasket": "Add to Basket",
+    "price": "USD"
+  },
+   "Filter": {
+    "Filtering" : "Filter",
+    "Category": "Categories",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "showResult" : "Show Result",
+    "Reset" : "Reset",
+    "allCategory" : "All"
+  },
+   "Basket": {
+    "myCart" : "My Cart",
+    "orderSummary": "Order Summary",
+    "totalProduct": "Total Product",
+    "totalAmount": "Total Amount",
+    "payment": "Pay"
+  }
+}
