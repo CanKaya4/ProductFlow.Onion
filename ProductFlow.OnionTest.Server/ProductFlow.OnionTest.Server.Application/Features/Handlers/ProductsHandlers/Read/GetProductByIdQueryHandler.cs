@@ -1,0 +1,65 @@
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
+using ProductFlow.OnionTest.Server.Application.Features.Handlers.Read;
+using ProductFlow.OnionTest.Server.Application.Features.Queries.ProductQueries;
+using ProductFlow.OnionTest.Server.Application.Features.Results.ProductResults;
+using ProductFlow.OnionTest.Server.Domain.Entities;
+using ProductFlow.OnionTest.Server.Domain.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
+using System.Text.Json;
+
+namespace ProductFlow.OnionTest.Server.Application.Features.Handlers.ProductsHandlers.Read
+{
+    public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, GetProductByIdQueryResult>
+    {
+        private readonly IUnitOfWork _uow;
+        private readonly ICacheService _cache; // Kendi yazdığımız ICacheService
+        private readonly IMapper _mapper;
+        private readonly ILogger<GetProductQueryHandler> _logger;
+
+        public GetProductByIdQueryHandler(IUnitOfWork uow, ICacheService cache, IMapper mapper, ILogger<GetProductQueryHandler> logger)
+        {
+            _uow = uow;
+            _cache = cache;
+            _mapper = mapper;
+            _logger = logger;
+        }
+
+        public async Task<GetProductByIdQueryResult> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+        {
+            string cacheKey = $"product_{request.Id}";
+
+            var cachedData = await _cache.GetStringAsync(cacheKey, cancellationToken);
+            if (!string.IsNullOrEmpty(cachedData))
+            {
+                _logger.LogInformation("Product {ProductId} cache'ten başarıyla getirildi.", request.Id);
+                return JsonSerializer.Deserialize<GetProductByIdQueryResult>(cachedData);
+            }
+
+
+            _logger.LogInformation("Product {ProductId} cache'te bulunamadı, veritabanından çekiliyor.", request.Id);
+
+            var value = await _uow.Products.GetByIdAsync(request.Id, p => p.Category);
+
+            if (value == null)
+            {
+                _logger.LogWarning("Product {ProductId} veritabanında bulunamadı.", request.Id);
+                throw new Exception("Ürün Bulunamadı");
+            }
+
+            var result = _mapper.Map<GetProductByIdQueryResult>(value);
+
+            var serializedData = JsonSerializer.Serialize(result);
+            await _cache.SetStringAsync(cacheKey, serializedData, TimeSpan.FromMinutes(30), cancellationToken);
+
+            _logger.LogInformation("Product {ProductId} veritabanından getirildi ve cache'e eklendi.", request.Id);
+
+            return result;
+        }
+    }
+}

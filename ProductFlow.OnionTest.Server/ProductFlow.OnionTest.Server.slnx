@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ProductFlow.OnionTest.Server.API/ProductFlow.OnionTest.Server.API.csproj" />
+  <Project Path="ProductFlow.OnionTest.Server.Application/ProductFlow.OnionTest.Server.Application.csproj" />
+  <Project Path="ProductFlow.OnionTest.Server.Domain/ProductFlow.OnionTest.Server.Domain.csproj" />
+  <Project Path="ProductFlow.OnionTest.Server.Infrastructure/ProductFlow.OnionTest.Server.Infrastructure.csproj" />
+</Solution>

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  product-api:
+    build:
+      context: ./ProductFlow.OnionTest.Server # Docker buradan aramaya başlayacak
+      dockerfile: ProductFlow.OnionTest.Server.API/Dockerfile
+    container_name: productflow-api
+    ports:
+      - "5000:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=productflow-db;Port=5432;Database=ProductFlowOnionDB;Username=postgres;Password=0880;Trust Server Certificate=true;
+      - ConnectionStrings__Redis=productflow-redis:6379,abortConnect=false
+    depends_on:
+      - productflow-db
+      - productflow-redis
+
+  productflow-db:
+    image: postgres:latest
+    container_name: productflow-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "0880"
+      POSTGRES_DB: ProductFlowOnionDB
+    ports:
+      - "5432:5432"
+
+  productflow-redis:
+    image: redis:latest
+    container_name: productflow-redis
+    ports:
+      - "6379:6379"
